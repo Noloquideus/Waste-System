@@ -17,9 +17,9 @@ class Name(ValueObject[str]):
             raise ValidationException(message='Username cannot contain leading or trailing spaces')
         if ' ' in self.value:
             raise ValidationException(message='Username cannot contain spaces')
-        if len(self.value) < SETTINGS.MIN_LENGTH_NAME.value:
+        if len(self.value) < SETTINGS.MIN_LENGTH_NAME:
             raise ValidationException(message='Username must be at least 3 characters long')
-        if len(self.value) > SETTINGS.MAX_LENGTH_NAME.value:
+        if len(self.value) > SETTINGS.MAX_LENGTH_NAME:
             raise ValidationException(message='Username must be at most 50 characters long')
         if not re.match(pattern=SETTINGS.NAME_PATTERN, string=self.value):
             raise ValidationException(message='Username must be alphanumeric and can include "-" and "_"')
