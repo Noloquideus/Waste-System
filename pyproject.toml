@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "westesystem"
+version = "0.1.0"
+description = ""
+authors = ["noloquideus <'manukyandaniila@yandex.ru'>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = {extras = ["all"], version = "^0.115.2"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
