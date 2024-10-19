@@ -15,7 +15,7 @@ async def lifespan(_):
     print('Application is shutting down...')
 
 
-app = FastAPI(title='Waste System', version='0.0.1', redoc_url=None, docs_url='/api/', lifespan=lifespan)
+app = FastAPI(title='Waste System', version='0.0.1', redoc_url=None, docs_url='/api/docs', lifespan=lifespan)
 app_router = APIRouter(prefix='/api')
 app_router.include_router(organization_router)
 app_router.include_router(storage_router)
@@ -38,6 +38,3 @@ async def custom_swagger_ui_html():
         swagger_js_url='https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js',
         swagger_css_url='https://unpkg.com/swagger-ui-dist@5/swagger-ui.css')
 
-if __name__ == '__main__':
-    import uvicorn
-    uvicorn.run(app, host='localhost', port=8000)
