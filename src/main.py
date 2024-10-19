@@ -20,6 +20,7 @@ app_router = APIRouter(prefix='/api')
 app_router.include_router(organization_router)
 app_router.include_router(storage_router)
 app.include_router(app_router)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=['*'],
