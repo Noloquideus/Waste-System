@@ -1,3 +1,4 @@
+from typing import List
 from src.application.abstractions.repositories.i_organization_repository import IOrganizationRepository
 from src.application.contracts.i_organization_service import IOrganizationService
 from src.application.domain.entities.organization import OrganizationEntity
@@ -13,3 +14,7 @@ class OrganizationService(IOrganizationService):
         organization_entity = OrganizationEntity(name=Name(name))
         organization = await self._repository.create(organization_entity)
         return organization
+
+    async def get_all(self) -> List[OrganizationEntity]:
+        organizations = await self._repository.get_all()
+        return organizations

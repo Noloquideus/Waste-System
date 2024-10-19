@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, List
 from sqlalchemy import select
 from src.application.abstractions.daos.i_organization_dao import IOrganizationDao
 from src.application.domain.entities.organization import OrganizationEntity
@@ -24,3 +24,9 @@ class OrganizationDao(IOrganizationDao):
         result = await self._session.execute(query)
         organization = result.scalars().one_or_none()
         return organization
+
+    async def get_all(self) -> List[Organization]:
+        query = select(Organization)
+        result = await self._session.execute(query)
+        organizations = result.scalars().all()
+        return organizations
