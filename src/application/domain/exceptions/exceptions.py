@@ -10,3 +10,7 @@ class ValidationException(Sealed, ApplicationException):
 class NotFoundException(Sealed, ApplicationException):
     def __init__(self, status_code: StatusCode = StatusCode.NOT_FOUND.value, message: str = 'Not found'):
         super().__init__(status_code=status_code, message=message)
+
+class NotRegisteredException(Sealed, ApplicationException):
+    def __init__(self, status_code: StatusCode = StatusCode.NOT_FOUND.value, message: str = 'Not registered'):
+        super().__init__(status_code=status_code, message=message)
