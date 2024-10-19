@@ -1,5 +1,3 @@
-import uuid
-
 from src.application.domain.entities.base import Entity
 from src.application.domain.value_objects.id import ID
 from src.application.domain.value_objects.name import Name
