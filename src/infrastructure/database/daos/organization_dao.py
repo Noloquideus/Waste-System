@@ -2,6 +2,7 @@ from typing import Union
 from sqlalchemy import select
 from src.application.abstractions.daos.i_organization_dao import IOrganizationDao
 from src.application.domain.entities.organization import OrganizationEntity
+from src.application.domain.exceptions.exceptions import NotFoundException
 from src.infrastructure.database.models.organization import Organization
 
 
@@ -11,7 +12,7 @@ class OrganizationDao(IOrganizationDao):
         checking = await self._get_by_name(organization_entity.name.value)
 
         if checking is not None:
-            raise Exception('Organization already exists')
+            raise NotFoundException(f'Organization with name {organization_entity.name.value} already exists')
 
         organization = Organization(name=organization_entity.name.value)
         self._session.add(organization)
