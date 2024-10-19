@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import List
 from src.application.abstractions.repositories.i_organization_repository import IOrganizationRepository
 from src.application.contracts.base import Service
 from src.application.domain.entities.organization import OrganizationEntity
@@ -11,4 +12,8 @@ class IOrganizationService(Service, ABC):
 
     @abstractmethod
     async def create(self, name: str) -> OrganizationEntity:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def get_all(self) -> List[OrganizationEntity]:
         raise NotImplementedError
