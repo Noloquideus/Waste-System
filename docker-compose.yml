@@ -1,0 +1,41 @@
+services:
+  database_container:
+    container_name: database
+    image: postgres:16.3-alpine3.20
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - ${DB_PORT}:5432
+
+  application_container:
+    container_name: application
+    build: .
+    env_file:
+      - .env
+    depends_on:
+      - database_container
+    volumes:
+      - ./logs:/application/logs
+    command: sh -c 'sleep 5 && alembic upgrade head && uvicorn src.main:app --host ${APP_HOST} --port ${APP_PORT}'
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+
+  keydb_container:
+    container_name: keydb
+    image: eqalpha/keydb
+    ports:
+      - ${REDIS_PORT}:6379
+
+  nginx_container:
+    container_name: nginx
+    image: nginx:stable-alpine3.19-perl
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - ${NGINX_PORT}:${NGINX_PORT}
+    depends_on:
+      - application_container
