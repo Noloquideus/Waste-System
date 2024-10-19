@@ -1,5 +1,6 @@
 from typing import Dict, Type
 from src.application.contracts.base import Service
+from src.application.domain.exceptions.exceptions import NotRegisteredException
 from src.infrastructure.database.unit_of_work import IUnitOfWork, UnitOfWork
 from src.application.builders.base import Builder
 from src.application.builders.organization.organization_builder import OrganizationBuilder
@@ -25,10 +26,10 @@ class Container:
     async def get_service(service_type: Type[Service]) -> Service:
 
         if service_type not in Container.__service_builders:
-            raise ValueError(f"No builder registered for service type {service_type}")
+            raise NotRegisteredException(f'No builder registered for service type {service_type}')
 
         if service_type not in Container.__service_repositories:
-            raise ValueError(f"No repository registered for service type {service_type}")
+            raise NotRegisteredException(f'No repository registered for service type {service_type}')
 
         builder_class = Container.__service_builders[service_type]()
         repository_class = Container.__service_repositories[service_type]
