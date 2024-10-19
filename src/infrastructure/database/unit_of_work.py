@@ -1,8 +1,12 @@
 from abc import ABC, abstractmethod
+from src.application.abstractions.daos.i_organization_dao import IOrganizationDao
+from src.infrastructure.database.daos.organization_dao import OrganizationDao
 from src.infrastructure.database.database import async_session_maker
 
 
 class IUnitOfWork(ABC):
+
+    organization_dao: IOrganizationDao = None
 
     def __init__(self):
         self.session_factory = async_session_maker
@@ -28,6 +32,7 @@ class UnitOfWork(IUnitOfWork):
 
     async def __aenter__(self):
         self.__session = self.session_factory()
+        self.organization_dao = OrganizationDao(self.__session)
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
