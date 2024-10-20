@@ -11,6 +11,7 @@ fastapi = {extras = ["all"], version = "^0.115.2"}
 sqlalchemy = "^2.0.36"
 alembic = "^1.13.3"
 asyncpg = "^0.29.0"
+gevent = "^24.10.3"
 
 
 [build-system]
