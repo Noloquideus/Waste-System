@@ -5,6 +5,7 @@ from src.application.domain.value_objects.id import ID
 from src.application.domain.value_objects.name import Name
 from src.logger import logger
 
+
 class WasteTypeRepository(IWasteTypeRepository):
 
     async def get_all(self) -> List[WasteTypeEntity]:

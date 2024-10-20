@@ -5,6 +5,7 @@ from src.application.domain.value_objects.id import ID
 from src.application.domain.value_objects.name import Name
 from src.logger import logger
 
+
 class OrganizationRepository(IOrganizationRepository):
 
     async def create(self, organization_entity: OrganizationEntity) -> OrganizationEntity:

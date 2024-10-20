@@ -4,6 +4,8 @@ from src.application.contracts.i_storage_service import IStorageService
 from src.application.domain.entities.storage import StorageEntity
 from src.container import Container
 from src.logger import logger
+
+
 storage_router = APIRouter(prefix='/storage', tags=['Storage'])
 
 @storage_router.post(path='/', status_code=201)

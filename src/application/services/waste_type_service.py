@@ -4,6 +4,7 @@ from src.application.contracts.i_waste_type_service import IWasteTypeService
 from src.application.domain.entities.waste_type import WasteTypeEntity
 from src.logger import logger
 
+
 class WasteTypeService(IWasteTypeService):
 
     def __init__(self, repository: IWasteTypeRepository):

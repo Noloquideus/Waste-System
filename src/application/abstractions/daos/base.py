@@ -1,6 +1,7 @@
 from abc import ABC
 from sqlalchemy.ext.asyncio import AsyncSession
 
+
 class Dao(ABC):
     __slots__ = ['_session']
 

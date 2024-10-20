@@ -3,6 +3,7 @@ from src.application.builders.organization.i_organization_builder import IOrgani
 from src.application.contracts.i_organization_service import IOrganizationService
 from src.application.services.organization_service import OrganizationService
 
+
 class OrganizationBuilder(IOrganizationBuilder):
 
     def __init__(self):

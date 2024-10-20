@@ -8,6 +8,7 @@ from src.infrastructure.database.daos.waste_type_dao import WasteTypeDao
 from src.infrastructure.database.database import async_session_maker
 from src.logger import logger
 
+
 class IUnitOfWork(ABC):
 
     organization_dao: IOrganizationDao = None

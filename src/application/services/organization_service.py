@@ -6,6 +6,7 @@ from src.application.domain.value_objects.id import ID
 from src.application.domain.value_objects.name import Name
 from src.logger import logger
 
+
 class OrganizationService(IOrganizationService):
 
     def __init__(self, repository: IOrganizationRepository):

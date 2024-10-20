@@ -5,6 +5,7 @@ from src.container import Container
 from src.core.enums.status_code import StatusCode
 from src.logger import logger
 
+
 waste_type_router = APIRouter(prefix='/waste_type', tags=['Waste Type'])
 
 @waste_type_router.get(path='/', status_code=StatusCode.OK.value)

@@ -7,6 +7,7 @@ from src.application.domain.entities.organization import OrganizationEntity
 from src.container import Container
 from src.logger import logger
 
+
 organization_router = APIRouter(prefix='/organization', tags=['Organization'])
 
 @organization_router.post(path='/', status_code=201)

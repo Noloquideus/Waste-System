@@ -4,6 +4,7 @@ from src.application.abstractions.daos.i_waste_type_dao import IWasteTypeDao
 from src.infrastructure.database.models import WasteType
 from src.logger import logger
 
+
 class WasteTypeDao(IWasteTypeDao):
     async def get_all(self) -> List[WasteType]:
         logger.info('Getting all waste types')
