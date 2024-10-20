@@ -20,5 +20,13 @@ class IStorageDao(Dao, ABC):
         raise NotImplementedError
 
     @abstractmethod
+    async def update(self, storage_entity: StorageEntity) -> Storage:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def delete(self, storage_entity: StorageEntity):
+        raise NotImplementedError
+
+    @abstractmethod
     async def _get_by_name(self, name: str) -> Union[Storage, None]:
         raise NotImplementedError

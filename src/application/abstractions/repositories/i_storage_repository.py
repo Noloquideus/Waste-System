@@ -18,3 +18,11 @@ class IStorageRepository(Repository, ABC):
     @abstractmethod
     async def get_by_id(self, storage_entity: StorageEntity) -> StorageEntity:
         raise NotImplementedError
+
+    @abstractmethod
+    async def update(self, storage_entity: StorageEntity) -> StorageEntity:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def delete(self, storage_entity: StorageEntity):
+        raise NotImplementedError

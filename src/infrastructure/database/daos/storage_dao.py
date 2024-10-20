@@ -45,7 +45,58 @@ class StorageDao(IStorageDao):
         return storages
 
     async def get_by_id(self, storage_entity: StorageEntity) -> Storage:
-        pass
+        logger.info(f'Getting storage with id: {storage_entity.id.value}')
+        query = select(Storage).where(Storage.id == storage_entity.id.value)
+        logger.debug(f'Query: {query}')
+        result = await self._session.execute(query)
+        logger.debug(f'Result: {result}')
+        storage = result.scalars().one_or_none()
+        logger.debug(f'Storage: {storage}')
+        logger.info('Storage found')
+        return storage
+
+    async def update(self, storage_entity: StorageEntity) -> Storage:
+        logger.info(f'Updating storage with id: {storage_entity.id.value}')
+        query = select(Storage).where(Storage.id == storage_entity.id.value)
+        logger.debug(f'Query: {query}')
+        result = await self._session.execute(query)
+        logger.debug(f'Result: {result}')
+        storage = result.scalars().one_or_none()
+        logger.debug(f'Storage: {storage}')
+
+        if storage is None:
+            logger.exception(f'Storage with id {storage_entity.id.value} not found')
+            raise NotFoundException(f'Storage with id {storage_entity.id.value} not found')
+
+        storage.name = storage_entity.name.value
+        storage.biowaste_capacity = storage_entity.biowaste_capacity.value
+        storage.plastic_capacity = storage_entity.plastic_capacity.value
+        storage.glass_capacity = storage_entity.glass_capacity.value
+        logger.debug(f'Storage updated: {storage}')
+        await self._session.flush()
+        logger.debug('Session flushed')
+        await self._session.refresh(storage)
+        logger.debug(f'Storage refreshed: {storage}')
+        logger.info('Storage updated')
+        return storage
+
+    async def delete(self, storage_entity: StorageEntity) -> Storage:
+        logger.info(f'Deleting storage with id: {storage_entity.id.value}')
+        query = select(Storage).where(Storage.id == storage_entity.id.value)
+        logger.debug(f'Query: {query}')
+        result = await self._session.execute(query)
+        logger.debug(f'Result: {result}')
+        storage = result.scalars().one_or_none()
+        logger.debug(f'Storage: {storage}')
+
+        if storage is None:
+            logger.exception(f'Storage with id {storage_entity.id.value} not found')
+            raise NotFoundException(f'Storage with id {storage_entity.id.value} not found')
+
+        await self._session.delete(storage)
+        logger.debug(f'Storage deleted: {storage}')
+        logger.info('Storage deleted')
+        return storage
 
     async def _get_by_name(self, name: str) -> Union[Storage, None]:
         logger.info(f'Searching storage with name: {name}')
@@ -57,3 +108,5 @@ class StorageDao(IStorageDao):
         logger.debug(f'Storage: {storage}')
         logger.info('Storage found')
         return storage
+
+
