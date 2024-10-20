@@ -17,7 +17,7 @@ class OrganizationRepository(IOrganizationRepository):
             organizations = await self._unit_of_work.organization_dao.get_all()
             return [OrganizationEntity(id=ID(str(organization.id)), name=Name(organization.name)) for organization in organizations]
 
-    async def get_by_id(self, organization_id: str) -> OrganizationEntity:
+    async def get_by_id(self, organization_entity: OrganizationEntity) -> OrganizationEntity:
         async with self._unit_of_work:
-            organization = await self._unit_of_work.organization_dao.get_by_id(organization_id)
+            organization = await self._unit_of_work.organization_dao.get_by_id(organization_entity)
             return OrganizationEntity(id=ID(str(organization.id)), name=Name(organization.name))

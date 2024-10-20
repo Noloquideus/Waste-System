@@ -15,5 +15,5 @@ class IOrganizationRepository(Repository, ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def get_by_id(self, organization_id: str) -> OrganizationEntity:
+    async def get_by_id(self, organization_entity: OrganizationEntity) -> OrganizationEntity:
         raise NotImplementedError

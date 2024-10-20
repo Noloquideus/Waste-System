@@ -2,6 +2,7 @@ from typing import List
 from src.application.abstractions.repositories.i_organization_repository import IOrganizationRepository
 from src.application.contracts.i_organization_service import IOrganizationService
 from src.application.domain.entities.organization import OrganizationEntity
+from src.application.domain.value_objects.id import ID
 from src.application.domain.value_objects.name import Name
 
 
@@ -20,5 +21,6 @@ class OrganizationService(IOrganizationService):
         return organizations
 
     async def get_by_id(self, organization_id: str) -> OrganizationEntity:
-        organization = await self._repository.get_by_id(organization_id)
+        organization_entity = OrganizationEntity(id=ID(organization_id))
+        organization = await self._repository.get_by_id(organization_entity)
         return organization

@@ -25,14 +25,14 @@ class OrganizationDao(IOrganizationDao):
         organizations = result.scalars().all()
         return organizations
 
-    async def get_by_id(self, organization_id: str) -> Organization:
+    async def get_by_id(self, organization_entity: OrganizationEntity) -> Organization:
 
-        query = select(Organization).where(Organization.id == organization_id)
+        query = select(Organization).where(Organization.id == organization_entity.id.value)
         result = await self._session.execute(query)
         organization = result.scalars().one_or_none()
 
         if organization is None:
-            raise NotFoundException(f'Organization with id {organization_id} not found')
+            raise NotFoundException(f'Organization with id {organization_entity.id.value} not found')
 
         return organization
 
