@@ -1,7 +1,6 @@
 from typing import Dict, List
-
 from fastapi import APIRouter
-from fastapi.params import Query, Path, Depends
+from fastapi.params import Query, Path
 from pydantic import StrictStr, StrictInt
 from src.application.contracts.i_organization_service import IOrganizationService
 from src.application.domain.entities.organization import OrganizationEntity
@@ -22,8 +21,10 @@ async def get_organizations() -> List[Dict[str, str]]:
     return [organization.to_dict() for organization in organizations]
 
 @organization_router.get(path='/{organization_id}', status_code=200)
-async def get_organization(organization_id: StrictInt = Path(title='ID of organization')):
-    pass
+async def get_organization(organization_id: StrictStr = Path(title='ID of organization')) -> Dict[str, str]:
+    service: IOrganizationService = await Container.get_service(IOrganizationService)
+    organization: OrganizationEntity = await service.get_by_id(organization_id)
+    return organization.to_dict()
 
 @organization_router.put(path='/{organization_id}', status_code=200)
 async def update_organization(organization_id: StrictInt = Path(title='ID of organization')):
