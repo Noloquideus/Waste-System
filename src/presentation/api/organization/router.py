@@ -1,7 +1,7 @@
 from typing import Dict, List
 from fastapi import APIRouter
 from fastapi.params import Query, Path
-from pydantic import StrictStr, StrictInt
+from pydantic import StrictStr
 from src.application.contracts.i_organization_service import IOrganizationService
 from src.application.domain.entities.organization import OrganizationEntity
 from src.container import Container
@@ -27,9 +27,15 @@ async def get_organization(organization_id: StrictStr = Path(title='ID of organi
     return organization.to_dict()
 
 @organization_router.put(path='/{organization_id}', status_code=200)
-async def update_organization(organization_id: StrictInt = Path(title='ID of organization')):
-    pass
+async def update_organization(
+        organization_id: StrictStr = Path(title='ID of organization'),
+        new_name: StrictStr = Query(title='New name of organization')) -> Dict[str, str]:
+    service: IOrganizationService = await Container.get_service(IOrganizationService)
+    organization: OrganizationEntity = await service.update(organization_id, new_name)
+    return organization.to_dict()
 
 @organization_router.delete(path='/{organization_id}', status_code=200)
-async def delete_organization(organization_id: StrictInt = Path(title='ID of organization')):
-    pass
+async def delete_organization(organization_id: StrictStr = Path(title='ID of organization')):
+    service: IOrganizationService = await Container.get_service(IOrganizationService)
+    await service.delete(organization_id)
+    return {'message': 'Organization deleted'}
