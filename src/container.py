@@ -1,5 +1,8 @@
 from typing import Dict, Type
+
+from src.application.builders.waste_type.waste_type_builder import WasteTypeBuilder
 from src.application.contracts.base import Service
+from src.application.contracts.i_waste_type_service import IWasteTypeService
 from src.application.domain.exceptions.exceptions import NotRegisteredException
 from src.infrastructure.database.unit_of_work import IUnitOfWork, UnitOfWork
 from src.application.builders.base import Builder
@@ -14,12 +17,14 @@ class Container:
 
     # Dictionary for storing builder types and their corresponding interfaces
     __service_builders: Dict[Type[Service], Type[Builder]] = {
-        IOrganizationService: OrganizationBuilder
+        IOrganizationService: OrganizationBuilder,
+        IWasteTypeService: WasteTypeBuilder
     }
 
     # Dictionary for storing correspondence between services and repositories
     __service_repositories: Dict[Type[Service], Type[IOrganizationRepository]] = {
-        IOrganizationService: OrganizationRepository
+        IOrganizationService: OrganizationRepository,
+        IWasteTypeService: OrganizationRepository
     }
 
     @staticmethod
