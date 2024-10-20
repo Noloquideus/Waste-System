@@ -18,3 +18,7 @@ class OrganizationService(IOrganizationService):
     async def get_all(self) -> List[OrganizationEntity]:
         organizations = await self._repository.get_all()
         return organizations
+
+    async def get_by_id(self, organization_id: str) -> OrganizationEntity:
+        organization = await self._repository.get_by_id(organization_id)
+        return organization

@@ -19,14 +19,27 @@ class OrganizationDao(IOrganizationDao):
         await self._session.flush()
         return organization
 
+    async def get_all(self) -> List[Organization]:
+        query = select(Organization)
+        result = await self._session.execute(query)
+        organizations = result.scalars().all()
+        return organizations
+
+    async def get_by_id(self, organization_id: str) -> Organization:
+
+        query = select(Organization).where(Organization.id == organization_id)
+        result = await self._session.execute(query)
+        organization = result.scalars().one_or_none()
+
+        if organization is None:
+            raise NotFoundException(f'Organization with id {organization_id} not found')
+
+        return organization
+
     async def _get_by_name(self, name: str) -> Union[Organization, None]:
         query = select(Organization).where(Organization.name == name)
         result = await self._session.execute(query)
         organization = result.scalars().one_or_none()
         return organization
 
-    async def get_all(self) -> List[Organization]:
-        query = select(Organization)
-        result = await self._session.execute(query)
-        organizations = result.scalars().all()
-        return organizations
+
