@@ -16,5 +16,10 @@ class IOrganizationDao(Dao, ABC):
         raise NotImplementedError
 
     @abstractmethod
+    async def get_by_id(self, organization_id: str) -> Organization:
+        raise NotImplementedError
+
+    @abstractmethod
     async def _get_by_name(self, name: str) -> Union[Organization, None]:
         raise NotImplementedError
+

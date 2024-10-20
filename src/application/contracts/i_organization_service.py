@@ -17,3 +17,7 @@ class IOrganizationService(Service, ABC):
     @abstractmethod
     async def get_all(self) -> List[OrganizationEntity]:
         raise NotImplementedError
+
+    @abstractmethod
+    async def get_by_id(self, organization_id: str) -> OrganizationEntity:
+        raise NotImplementedError
