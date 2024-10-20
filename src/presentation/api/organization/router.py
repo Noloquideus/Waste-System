@@ -51,15 +51,22 @@ async def update_organization(
         organization_id: StrictStr = Path(title='ID of organization'),
         new_name: StrictStr = Query(title='New name of organization')) -> Dict[str, str]:
     logger.start_trace()
+    logger.info(f'Updating organization with id: {organization_id}')
     service: IOrganizationService = await Container.get_service(IOrganizationService)
+    logger.debug(f'Service created: {service}')
     organization: OrganizationEntity = await service.update(organization_id, new_name)
+    logger.debug(f'Organization updated: {organization}')
     logger.end_trace()
     return organization.to_dict()
 
 @organization_router.delete(path='/{organization_id}', status_code=200)
 async def delete_organization(organization_id: StrictStr = Path(title='ID of organization')):
     logger.start_trace()
+    logger.info(f'Deleting organization with id: {organization_id}')
     service: IOrganizationService = await Container.get_service(IOrganizationService)
+    logger.debug(f'Service created: {service}')
     await service.delete(organization_id)
+    logger.info('Organization deleted')
+    logger.debug(f'Organization deleted: {organization_id}')
     logger.end_trace()
     return {'message': 'Organization deleted'}
