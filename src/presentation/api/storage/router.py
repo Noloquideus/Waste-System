@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, Query
 from pydantic import StrictStr, StrictInt
 from src.application.contracts.i_storage_service import IStorageService
@@ -34,16 +36,30 @@ async def create_storage(
 
 @storage_router.get(path='/', status_code=200)
 async def get_storages():
-    pass
+    logger.start_trace()
+    logger.info('Getting all storages')
+    service: IStorageService = await Container.get_service(IStorageService)
+    logger.debug(f'Service created: {service}')
+    storages: List[StorageEntity] = await service.get_all()
+    logger.debug(f'Storages: {storages}')
+    logger.info('Storages found')
+    logger.end_trace()
+    return [storage.to_dict() for storage in storages]
 
 @storage_router.get(path='/{storage_id}', status_code=200)
 async def get_storage(storage_id):
-    pass
+    logger.start_trace()
+    service: IStorageService = await Container.get_service(IStorageService)
+    logger.end_trace()
 
 @storage_router.put(path='/{storage_id}', status_code=200)
 async def update_storage(storage_id):
-    pass
+    logger.start_trace()
+    service: IStorageService = await Container.get_service(IStorageService)
+    logger.end_trace()
 
 @storage_router.delete(path='/{storage_id}', status_code=200)
 async def delete_storage(storage_id):
-    pass
+    logger.start_trace()
+    service: IStorageService = await Container.get_service(IStorageService)
+    logger.end_trace()
