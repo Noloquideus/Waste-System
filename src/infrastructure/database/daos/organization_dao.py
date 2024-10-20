@@ -6,6 +6,7 @@ from src.application.domain.exceptions.exceptions import NotFoundException
 from src.infrastructure.database.models.organization import Organization
 from src.logger import logger
 
+
 class OrganizationDao(IOrganizationDao):
 
     async def create(self, organization_entity: OrganizationEntity) -> Organization:
@@ -85,6 +86,7 @@ class OrganizationDao(IOrganizationDao):
         if organization is None:
             logger.exception(f'Organization with id {organization_entity.id.value} not found')
             raise NotFoundException(f'Organization with id {organization_entity.id.value} not found')
+
         await self._session.delete(organization)
         logger.info('Organization deleted')
 
