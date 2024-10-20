@@ -5,6 +5,8 @@ from starlette.middleware.cors import CORSMiddleware
 from src.presentation.api.organization.router import organization_router
 from src.presentation.api.storage.router import storage_router
 from src.logger import logger
+from src.presentation.api.waste_type.router import waste_type_router
+
 
 @asynccontextmanager
 async def lifespan(_):
@@ -21,6 +23,7 @@ app = FastAPI(title='Waste System', version='0.0.1', redoc_url=None, docs_url='/
 app_router = APIRouter(prefix='/api')
 app_router.include_router(organization_router)
 app_router.include_router(storage_router)
+app_router.include_router(waste_type_router)
 app.include_router(app_router)
 
 app.add_middleware(
