@@ -13,13 +13,14 @@ class Serializable(ABC):
                 if attr_value is None:
                     continue
 
+                # Convert all types to string representation
                 if isinstance(attr_value, Serializable):
                     if hasattr(attr_value, 'value'):
-                        result[attr_name] = attr_value.value
+                        result[attr_name] = str(attr_value.value)
                     else:
-                        result[attr_name] = attr_value.to_dict()
+                        result[attr_name] = str(attr_value.to_dict())
                 else:
-                    result[attr_name] = attr_value
+                    result[attr_name] = str(attr_value)
         return result
 
     def to_json(self):
@@ -30,6 +31,6 @@ class Serializable(ABC):
         return f'{attributes}'
 
     def __repr__(self):
-        attributes = ", ".join(f"{key}={getattr(self, key)}" for key in dir(self)
+        attributes = ", ".join(f"{key}={str(getattr(self, key))}" for key in dir(self)
                                if not key.startswith('_') and not callable(getattr(self, key)))
         return f'{self.__class__.__name__}({attributes})'
