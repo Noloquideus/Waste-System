@@ -15,4 +15,5 @@ class OrganizationBuilder(IOrganizationBuilder):
     def build(self) -> IOrganizationService:
         if not self._repository:
             raise ValueError('Repository must be set before building the service.')
+
         return OrganizationService(self._repository)
