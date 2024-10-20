@@ -10,13 +10,11 @@ from src.presentation.api.waste_type.router import waste_type_router
 
 @asynccontextmanager
 async def lifespan(_):
-    logger.start_trace()
     logger.info('Application is starting...')
     logger.unload_logs()
     yield
     logger.info('Application is shutting down...')
     logger.unload_logs()
-    logger.end_trace()
 
 
 app = FastAPI(title='Waste System', version='0.0.1', redoc_url=None, docs_url='/api/docs', lifespan=lifespan)
@@ -24,6 +22,7 @@ app_router = APIRouter(prefix='/api')
 app_router.include_router(organization_router)
 app_router.include_router(storage_router)
 app_router.include_router(waste_type_router)
+app_router.include_router(storage_router)
 app.include_router(app_router)
 
 app.add_middleware(
