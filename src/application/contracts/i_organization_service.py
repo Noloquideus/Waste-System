@@ -21,3 +21,11 @@ class IOrganizationService(Service, ABC):
     @abstractmethod
     async def get_by_id(self, organization_id: str) -> OrganizationEntity:
         raise NotImplementedError
+
+    @abstractmethod
+    async def update(self, organization_id: str, new_name: str) -> OrganizationEntity:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def delete(self, organization_id: str):
+        raise NotImplementedError

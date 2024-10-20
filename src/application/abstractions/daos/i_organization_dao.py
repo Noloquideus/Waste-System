@@ -20,6 +20,14 @@ class IOrganizationDao(Dao, ABC):
         raise NotImplementedError
 
     @abstractmethod
+    async def delete(self, organization_entity: OrganizationEntity):
+        raise NotImplementedError
+
+    @abstractmethod
+    async def update(self, organization_entity: OrganizationEntity) -> Organization:
+        raise NotImplementedError
+
+    @abstractmethod
     async def _get_by_name(self, name: str) -> Union[Organization, None]:
         raise NotImplementedError
 

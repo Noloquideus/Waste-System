@@ -17,3 +17,11 @@ class IOrganizationRepository(Repository, ABC):
     @abstractmethod
     async def get_by_id(self, organization_entity: OrganizationEntity) -> OrganizationEntity:
         raise NotImplementedError
+
+    @abstractmethod
+    async def update(self, organization_entity: OrganizationEntity) -> OrganizationEntity:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def delete(self, organization_entity: OrganizationEntity):
+        raise NotImplementedError
