@@ -14,7 +14,6 @@ class WasteTypeEntity(Entity):
     ):
         self._id = id
         self._name = name
-        super().__init__()
 
     @property
     def id(self):
