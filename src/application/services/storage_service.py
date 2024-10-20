@@ -1,3 +1,4 @@
+from typing import List
 from src.application.contracts.i_storage_service import IStorageService
 from src.application.domain.entities.storage import StorageEntity
 from src.application.domain.value_objects.name import Name
@@ -21,3 +22,13 @@ class StorageService(IStorageService):
         logger.debug(f'Storage created: {storage}')
         logger.info('Storage created')
         return storage
+
+    async def get_all(self) -> List[StorageEntity]:
+        logger.info('Getting all storages')
+        storages = await self._repository.get_all()
+        logger.debug(f'Storages: {storages}')
+        logger.info('Storages found')
+        return storages
+
+    async def get_by_id(self, name: str) -> StorageEntity:
+        pass

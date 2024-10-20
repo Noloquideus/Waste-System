@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, List
 from sqlalchemy import select
 from src.application.abstractions.daos.i_storage_dao import IStorageDao
 from src.application.domain.entities.storage import StorageEntity
@@ -32,6 +32,20 @@ class StorageDao(IStorageDao):
         logger.debug('Session flushed')
         logger.info('Storage created')
         return storage
+
+    async def get_all(self) -> List[Storage]:
+        logger.info('Getting all storages')
+        query = select(Storage)
+        logger.debug(f'Query: {query}')
+        result = await self._session.execute(query)
+        logger.debug(f'Result: {result}')
+        storages = result.scalars().all()
+        logger.debug(f'Storages: {storages}')
+        logger.info('Storages found')
+        return storages
+
+    async def get_by_id(self, storage_entity: StorageEntity) -> Storage:
+        pass
 
     async def _get_by_name(self, name: str) -> Union[Storage, None]:
         logger.info(f'Searching storage with name: {name}')

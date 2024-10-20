@@ -1,3 +1,4 @@
+from typing import List
 from src.application.abstractions.repositories.i_storage_repository import IStorageRepository
 from src.application.domain.entities.storage import StorageEntity
 from src.application.domain.value_objects.id import ID
@@ -31,3 +32,30 @@ class StorageRepository(IStorageRepository):
             logger.debug(f'Storage created: {storage_entity}')
             return storage_entity
 
+    async def get_all(self) -> List[StorageEntity]:
+        logger.info('Getting all storages')
+        async with self._unit_of_work:
+            logger.info('Start storages found')
+            storages = await self._unit_of_work.storage_dao.get_all()
+            logger.debug(f'Storages: {storages}')
+            logger.info('Storages found')
+            storage_entities = [
+                StorageEntity(
+                    id=ID(str(storage.id)),
+                    name=Name(storage.name),
+                    biowaste=Quantity(storage.biowaste),
+                    plastic=Quantity(storage.plastic),
+                    glass=Quantity(storage.glass),
+                    biowaste_capacity=Quantity(storage.biowaste_capacity),
+                    plastic_capacity=Quantity(storage.plastic_capacity),
+                    glass_capacity=Quantity(storage.glass_capacity),
+                    biowaste_remaining=Quantity(storage.biowaste_remaining),
+                    plastic_remaining=Quantity(storage.plastic_remaining),
+                    glass_remaining=Quantity(storage.glass_remaining),
+                )
+                for storage in storages
+            ]
+            return storage_entities
+
+    async def get_by_id(self, storage_entity: StorageEntity) -> StorageEntity:
+        pass
