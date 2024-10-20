@@ -24,3 +24,12 @@ class OrganizationService(IOrganizationService):
         organization_entity = OrganizationEntity(id=ID(organization_id))
         organization = await self._repository.get_by_id(organization_entity)
         return organization
+
+    async def update(self, organization_id: str, new_name: str) -> OrganizationEntity:
+        organization_entity = OrganizationEntity(id=ID(organization_id), name=Name(new_name))
+        organization = await self._repository.update(organization_entity)
+        return organization
+
+    async def delete(self, organization_id: str):
+        organization_entity = OrganizationEntity(id=ID(organization_id))
+        await self._repository.delete(organization_entity)

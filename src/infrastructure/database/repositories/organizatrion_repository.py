@@ -21,3 +21,12 @@ class OrganizationRepository(IOrganizationRepository):
         async with self._unit_of_work:
             organization = await self._unit_of_work.organization_dao.get_by_id(organization_entity)
             return OrganizationEntity(id=ID(str(organization.id)), name=Name(organization.name))
+
+    async def update(self, organization_entity: OrganizationEntity) -> OrganizationEntity:
+        async with self._unit_of_work:
+            organization = await self._unit_of_work.organization_dao.update(organization_entity)
+            return OrganizationEntity(id=ID(str(organization.id)), name=Name(organization.name))
+
+    async def delete(self, organization_entity: OrganizationEntity):
+        async with self._unit_of_work:
+            await self._unit_of_work.organization_dao.delete(organization_entity)

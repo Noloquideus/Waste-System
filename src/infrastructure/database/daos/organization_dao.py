@@ -36,6 +36,30 @@ class OrganizationDao(IOrganizationDao):
 
         return organization
 
+    async def update(self, organization_entity: OrganizationEntity) -> Organization:
+
+        query = select(Organization).where(Organization.id == organization_entity.id.value)
+        result = await self._session.execute(query)
+        organization = result.scalars().one_or_none()
+
+        if organization is None:
+            raise NotFoundException(f'Organization with id {organization_entity.id.value} not found')
+
+        organization.name = organization_entity.name.value
+        await self._session.flush()
+        return organization
+
+    async def delete(self, organization_entity: OrganizationEntity):
+
+        query = select(Organization).where(Organization.id == organization_entity.id.value)
+        result = await self._session.execute(query)
+        organization = result.scalars().one_or_none()
+
+        if organization is None:
+            raise NotFoundException(f'Organization with id {organization_entity.id.value} not found')
+
+        await self._session.delete(organization)
+
     async def _get_by_name(self, name: str) -> Union[Organization, None]:
         query = select(Organization).where(Organization.name == name)
         result = await self._session.execute(query)
