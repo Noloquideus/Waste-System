@@ -1,18 +1,20 @@
 from contextlib import asynccontextmanager
-
 from fastapi import FastAPI, APIRouter
 from fastapi.openapi.docs import get_swagger_ui_html
 from starlette.middleware.cors import CORSMiddleware
-
 from src.presentation.api.organization.router import organization_router
 from src.presentation.api.storage.router import storage_router
-
+from src.logger import logger
 
 @asynccontextmanager
 async def lifespan(_):
-    print('Application is starting...')
+    logger.start_trace()
+    logger.info('Application is starting...')
+    logger.unload_logs()
     yield
-    print('Application is shutting down...')
+    logger.info('Application is shutting down...')
+    logger.unload_logs()
+    logger.end_trace()
 
 
 app = FastAPI(title='Waste System', version='0.0.1', redoc_url=None, docs_url='/api/docs', lifespan=lifespan)
@@ -38,4 +40,3 @@ async def custom_swagger_ui_html():
         oauth2_redirect_url=app.swagger_ui_oauth2_redirect_url,
         swagger_js_url='https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js',
         swagger_css_url='https://unpkg.com/swagger-ui-dist@5/swagger-ui.css')
-
