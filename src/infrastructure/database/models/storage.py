@@ -4,6 +4,7 @@ from sqlalchemy.dialects.postgresql import UUID, VARCHAR, INTEGER
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from src.infrastructure.database.models.base import Base
 
+
 class Storage(Base):
     __tablename__ = 'storage'
 
