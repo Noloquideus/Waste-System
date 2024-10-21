@@ -14,3 +14,11 @@ class NotFoundException(Sealed, ApplicationException):
 class NotRegisteredException(Sealed, ApplicationException):
     def __init__(self, status_code: StatusCode = StatusCode.NOT_FOUND.value, message: str = 'Not registered'):
         super().__init__(status_code=status_code, message=message)
+
+class CapacityException(Sealed, ApplicationException):
+    def __init__(self, status_code: StatusCode = StatusCode.BAD_REQUEST.value, message: str = 'Capacity exceeded'):
+        super().__init__(status_code=status_code, message=message)
+
+class InvalidTypeException(Sealed, ApplicationException):
+    def __init__(self, status_code: StatusCode = StatusCode.BAD_REQUEST.value, message: str = 'Invalid type'):
+        super().__init__(status_code=status_code, message=message)
