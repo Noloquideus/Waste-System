@@ -2,7 +2,7 @@ from typing import Union, List
 from sqlalchemy import select
 from src.application.abstractions.daos.i_storage_dao import IStorageDao
 from src.application.domain.entities.storage import StorageEntity
-from src.application.domain.exceptions.exceptions import NotFoundException
+from src.application.domain.exceptions.exceptions import NotFoundException, CapacityException, InvalidTypeException
 from src.infrastructure.database.models import Storage
 from src.logger import logger
 
@@ -31,6 +31,100 @@ class StorageDao(IStorageDao):
         await self._session.flush()
         logger.debug('Session flushed')
         logger.info('Storage created')
+        return storage
+
+    async def add_biowaste(self, storage_entity: StorageEntity) -> Storage:
+
+        if storage_entity.biowaste.value < 1 or storage_entity.biowaste.value is None:
+            logger.exception(f'Invalid biowaste amount: {storage_entity.biowaste.value}')
+            raise InvalidTypeException('Invalid biowaste amount')
+
+        logger.info(f'Adding biowaste to storage with id: {storage_entity.id.value}')
+
+        storage = await self.get_by_id(storage_entity)
+        logger.debug(f'Storage: {storage}')
+
+        if storage is None:
+            logger.exception(f'Storage with id {storage_entity.id.value} not found')
+            raise NotFoundException(f'Storage with id {storage_entity.id.value} not found')
+
+        new_biowaste = storage.biowaste + storage_entity.biowaste.value
+        logger.debug(f'New biowaste: {new_biowaste}')
+        if new_biowaste > storage.biowaste_capacity:
+            logger.exception(f'Adding {storage_entity.biowaste.value} would exceed capacity')
+            raise CapacityException('Biowaste amount exceeds storage capacity')
+
+        storage.biowaste = new_biowaste
+        logger.debug(f'Updated biowaste: {storage.biowaste}')
+
+        await self._session.flush()
+        logger.debug('Session flushed')
+        await self._session.refresh(storage)
+        logger.debug(f'Storage refreshed: {storage}')
+        logger.info('Biowaste added')
+        return storage
+
+    async def add_plastic(self, storage_entity: StorageEntity) -> Storage:
+
+        if storage_entity.plastic.value < 1 or storage_entity.plastic.value is None:
+            logger.exception(f'Invalid plastic amount: {storage_entity.plastic.value}')
+            raise InvalidTypeException('Invalid plastic amount')
+
+        logger.info(f'Adding plastic to storage with id: {storage_entity.id.value}')
+
+        storage = await self.get_by_id(storage_entity)
+        logger.debug(f'Storage: {storage}')
+
+        if storage is None:
+            logger.exception(f'Storage with id {storage_entity.id.value} not found')
+            raise NotFoundException(f'Storage with id {storage_entity.id.value} not found')
+
+        new_plastic = storage.plastic + storage_entity.plastic.value
+        logger.debug(f'New plastic: {new_plastic}')
+        if new_plastic > storage.plastic_capacity:
+            logger.exception(f'Adding {storage_entity.plastic.value} would exceed capacity')
+            raise CapacityException('Plastic amount exceeds storage capacity')
+
+        storage.plastic = new_plastic
+        logger.debug(f'Updated plastic: {storage.plastic}')
+
+        await self._session.flush()
+        logger.debug('Session flushed')
+        await self._session.refresh(storage)
+        logger.debug(f'Storage refreshed: {storage}')
+        logger.info('Plastic added')
+        return storage
+
+    async def add_glass(self, storage_entity: StorageEntity) -> Storage:
+
+        if storage_entity.glass.value < 1 or storage_entity.glass.value is None:
+            logger.exception(f'Invalid glass amount: {storage_entity.glass.value}')
+            raise InvalidTypeException('Invalid glass amount')
+
+        logger.info(f'Adding glass to storage with id: {storage_entity.id.value}')
+
+        storage = await self.get_by_id(storage_entity)
+        logger.debug(f'Storage: {storage}')
+
+        if storage is None:
+            logger.exception(f'Storage with id {storage_entity.id.value} not found')
+            raise NotFoundException(f'Storage with id {storage_entity.id.value} not found')
+
+        new_glass = storage.glass + storage_entity.glass.value
+        logger.debug(f'New glass: {new_glass}')
+
+        if new_glass > storage.glass_capacity:
+            logger.exception(f'Adding {storage_entity.glass.value} would exceed capacity')
+            raise CapacityException('Glass amount exceeds storage capacity')
+
+        storage.glass = new_glass
+        logger.debug(f'Updated glass: {storage.glass}')
+
+        await self._session.flush()
+        logger.debug('Session flushed')
+        await self._session.refresh(storage)
+        logger.debug(f'Storage refreshed: {storage}')
+        logger.info('Glass added')
         return storage
 
     async def get_all(self) -> List[Storage]:
@@ -108,5 +202,3 @@ class StorageDao(IStorageDao):
         logger.debug(f'Storage: {storage}')
         logger.info('Storage found')
         return storage
-
-
