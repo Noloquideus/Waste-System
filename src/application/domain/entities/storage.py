@@ -35,8 +35,6 @@ class StorageEntity(Sealed, Entity):
         self._plastic_remaining = plastic_remaining
         self._glass_remaining = glass_remaining
 
-
-
     @property
     def id(self):
         return self._id
