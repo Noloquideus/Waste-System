@@ -3,6 +3,7 @@ from src.infrastructure.database.unit_of_work import IUnitOfWork
 
 
 class Repository(ABC):
+    """Base class for repositories"""
     __slots__ = ['_unit_of_work']
 
     def __init__(self, unit_of_work: IUnitOfWork):

@@ -3,6 +3,7 @@ from src.core.exceptions.base import SystemException
 
 
 class Incomparable(ABC):
+    """Base class for incomparable objects"""
     def __eq__(self, other):
         raise SystemException(f'{self.__class__.__name__} objects cannot be compared')
 

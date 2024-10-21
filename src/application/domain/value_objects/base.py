@@ -5,6 +5,7 @@ from src.core.objects.serializable import Serializable
 
 
 class ValueObject[T](Serializable, Immutable, ABC):
+    """Base class for value objects"""
     def __init__(self, value: T):
         self._value = value
         super().__init__()

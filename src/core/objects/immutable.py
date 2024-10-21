@@ -3,6 +3,7 @@ from src.core.exceptions.base import SystemException
 
 
 class Immutable(ABC):
+    """Base class for immutable objects"""
     def __init__(self, *args, **kwargs):
         self._frozen = False
         super().__init__(*args, **kwargs)

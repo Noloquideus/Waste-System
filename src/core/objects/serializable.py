@@ -3,6 +3,7 @@ from abc import ABC
 
 
 class Serializable(ABC):
+    """Base class for serializable objects"""
 
     def to_dict(self):
         result = {}

@@ -2,6 +2,7 @@ from src.core.exceptions.base import SystemException
 
 
 class Sealed:
+    """Base class for sealed objects"""
     _is_sealed = False
 
     def __init_subclass__(cls, **kwargs):

@@ -3,7 +3,7 @@ from src.application.abstractions.repositories.base import Repository
 
 
 class Builder(ABC):
-
+    """Base class for builders"""
     @abstractmethod
     def set_repository(self, repository: Repository) -> 'Builder':
         """Set the repository dependency."""

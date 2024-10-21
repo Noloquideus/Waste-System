@@ -3,4 +3,5 @@ from src.core.objects.serializable import Serializable
 
 
 class Entity(Serializable, ABC):
+    """Base class for entities"""
     pass
