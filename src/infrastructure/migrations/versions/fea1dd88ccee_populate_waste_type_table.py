@@ -19,13 +19,10 @@ branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
-    # Создаем объект MetaData для доступа к таблицам
     metadata = MetaData()
 
-    # Отображаем таблицу waste_type
     waste_type_table = Table('waste_type', metadata, autoload_with=op.get_bind())
 
-    # Вставляем данные в таблицу
     op.bulk_insert(
         waste_type_table,
         [
