@@ -1,0 +1,12 @@
+README.md
+LICENSE
+tests/
+__pycache__/
+.mypy_cache
+.pytest_cache
+.gitignore
+.editorconfig
+.pre-commit-config.yaml
+ruff.toml
+pytest.ini
+.idea/
