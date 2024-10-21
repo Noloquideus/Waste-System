@@ -12,6 +12,18 @@ class IStorageDao(Dao, ABC):
         raise NotImplementedError
 
     @abstractmethod
+    async def add_biowaste(self, storage_entity: StorageEntity) -> Storage:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def add_plastic(self, storage_entity: StorageEntity) -> Storage:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def add_glass(self, storage_entity: StorageEntity) -> Storage:
+        raise NotImplementedError
+
+    @abstractmethod
     async def get_all(self) -> List[Storage]:
         raise NotImplementedError
 
