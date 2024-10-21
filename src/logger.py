@@ -9,6 +9,7 @@ from gevent import monkey
 from src.core.data_structures.collector import Collector
 from src.core.decorators.validate_types import validate_types
 from src.core.enums.log_levels import LogLevel
+from src.core.exceptions.base import SystemException
 
 monkey.patch_all()
 
@@ -60,7 +61,7 @@ class AsyncLogger:
             try:
                 log_message = self.log_format.format(**log_context)
             except KeyError as e:
-                raise ValueError(f'Invalid field in log format: {e}')
+                raise SystemException(f'Invalid field in log format: {e}')
 
             self._write(log_message)
 
