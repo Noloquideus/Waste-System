@@ -16,7 +16,7 @@ from src.application.builders.base import Builder
 from src.application.builders.organization.organization_builder import OrganizationBuilder
 from src.application.contracts.i_organization_service import IOrganizationService
 from src.infrastructure.database.repositories.organizatrion_repository import OrganizationRepository
-
+from src.logger import logger
 
 class Container:
 
@@ -41,18 +41,27 @@ class Container:
     @staticmethod
     async def get_service(service_type: Type[Service]) -> Service:
 
+        logger.info(f'Getting service of type {service_type}')
+
         if service_type not in Container.__service_builders:
+            logger.exception(f'No builder registered for service type {service_type}')
             raise NotRegisteredException(f'No builder registered for service type {service_type}')
 
         if service_type not in Container.__service_repositories:
+            logger.exception(f'No repository registered for service type {service_type}')
             raise NotRegisteredException(f'No repository registered for service type {service_type}')
 
         builder_class = Container.__service_builders[service_type]()
+        logger.debug(f'Builder class created: {builder_class}')
         repository_class = Container.__service_repositories[service_type]
+        logger.debug(f'Repository class created: {repository_class}')
 
         unit_of_work = Container.__unit_of_work()
+        logger.debug(f'Unit of work created: {unit_of_work}')
 
         repository = repository_class(unit_of_work)
+        logger.debug(f'Repository created: {repository}')
 
         service = builder_class.set_repository(repository).build()
+        logger.debug(f'Service created: {service}')
         return service
