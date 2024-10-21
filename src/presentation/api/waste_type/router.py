@@ -1,5 +1,6 @@
 from typing import List, Dict
 from fastapi import APIRouter
+from fastapi_cache.decorator import cache
 from src.application.contracts.i_waste_type_service import IWasteTypeService
 from src.container import Container
 from src.core.enums.status_code import StatusCode
@@ -9,6 +10,7 @@ from src.logger import logger
 waste_type_router = APIRouter(prefix='/waste_type', tags=['Waste Type'])
 
 @waste_type_router.get(path='/', status_code=StatusCode.OK.value)
+@cache(expire=10)
 async def get_waste_types() -> List[Dict[str, str]]:
     logger.start_trace()
     service: IWasteTypeService = await Container.get_service(IWasteTypeService)

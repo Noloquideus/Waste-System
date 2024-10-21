@@ -1,15 +1,17 @@
 from typing import List, Dict
 from fastapi import APIRouter, Query, Path
+from fastapi_cache.decorator import cache
 from pydantic import StrictStr, StrictInt
 from src.application.contracts.i_storage_service import IStorageService
 from src.application.domain.entities.storage import StorageEntity
 from src.container import Container
+from src.core.enums.status_code import StatusCode
 from src.logger import logger
 
 
 storage_router = APIRouter(prefix='/storage', tags=['Storage'])
 
-@storage_router.post(path='/', status_code=201)
+@storage_router.post(path='/', status_code=StatusCode.CREATED.value)
 async def create_storage(
         name: StrictStr = Query(title='Name of storage'),
         biowaste_capacity: StrictInt = Query(title='Biowaste capacity of storage'),
@@ -33,7 +35,8 @@ async def create_storage(
     return storage.to_dict()
 
 
-@storage_router.get(path='/', status_code=200)
+@storage_router.get(path='/', status_code=StatusCode.OK.value)
+@cache(expire=10)
 async def get_storages() -> List[Dict[str, str]]:
     logger.start_trace()
     logger.info('Getting all storages')
@@ -45,7 +48,8 @@ async def get_storages() -> List[Dict[str, str]]:
     logger.end_trace()
     return [storage.to_dict() for storage in storages]
 
-@storage_router.get(path='/{storage_id}', status_code=200)
+@storage_router.get(path='/{storage_id}', status_code=StatusCode.OK.value)
+@cache(expire=10)
 async def get_storage(storage_id: StrictStr = Path(title='ID of storage')) -> Dict[str, str]:
     logger.start_trace()
     logger.info(f'Getting storage with id: {storage_id}')

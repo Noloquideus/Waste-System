@@ -2,15 +2,17 @@ from typing import Dict, List
 from fastapi import APIRouter
 from fastapi.params import Query, Path
 from pydantic import StrictStr
+from fastapi_cache.decorator import cache
 from src.application.contracts.i_organization_service import IOrganizationService
 from src.application.domain.entities.organization import OrganizationEntity
 from src.container import Container
+from src.core.enums.status_code import StatusCode
 from src.logger import logger
 
 
 organization_router = APIRouter(prefix='/organization', tags=['Organization'])
 
-@organization_router.post(path='/', status_code=201)
+@organization_router.post(path='/', status_code=StatusCode.CREATED.value)
 async def create_organization(name: StrictStr = Query(title='Name of organization')) -> Dict[str, str]:
     logger.start_trace()
     logger.info(f'Creating organization with name: {name}')
@@ -23,7 +25,8 @@ async def create_organization(name: StrictStr = Query(title='Name of organizatio
     logger.end_trace()
     return organization.to_dict()
 
-@organization_router.get(path='/', status_code=200)
+@organization_router.get(path='/', status_code=StatusCode.OK.value)
+@cache(expire=10)
 async def get_organizations() -> List[Dict[str, str]]:
     logger.start_trace()
     logger.info('Getting all organizations')
@@ -34,7 +37,8 @@ async def get_organizations() -> List[Dict[str, str]]:
     logger.end_trace()
     return [organization.to_dict() for organization in organizations]
 
-@organization_router.get(path='/{organization_id}', status_code=200)
+@organization_router.get(path='/{organization_id}', status_code=StatusCode.OK.value)
+@cache(expire=10)
 async def get_organization(organization_id: StrictStr = Path(title='ID of organization')) -> Dict[str, str]:
     logger.start_trace()
     logger.info(f'Getting organization with id: {organization_id}')
@@ -46,7 +50,7 @@ async def get_organization(organization_id: StrictStr = Path(title='ID of organi
     logger.end_trace()
     return organization.to_dict()
 
-@organization_router.put(path='/{organization_id}', status_code=200)
+@organization_router.put(path='/{organization_id}', status_code=StatusCode.OK.value)
 async def update_organization(
         organization_id: StrictStr = Path(title='ID of organization'),
         new_name: StrictStr = Query(title='New name of organization')) -> Dict[str, str]:
@@ -59,7 +63,7 @@ async def update_organization(
     logger.end_trace()
     return organization.to_dict()
 
-@organization_router.delete(path='/{organization_id}', status_code=200)
+@organization_router.delete(path='/{organization_id}', status_code=StatusCode.OK.value)
 async def delete_organization(organization_id: StrictStr = Path(title='ID of organization')):
     logger.start_trace()
     logger.info(f'Deleting organization with id: {organization_id}')
