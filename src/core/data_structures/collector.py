@@ -3,9 +3,14 @@ from src.core.decorators.validate_types import validate_types
 
 
 class Collector:
-    def __init__(self):
+    """
+    A data structure that implements log storage
+
+    It is used for storing logs and multiple uploads
+    """
+    def __init__(self, capacity: int = 1):
         self.data_storage = []
-        self.capacity = 1
+        self.capacity = capacity
 
     def __validate_types(self):
 

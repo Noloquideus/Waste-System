@@ -14,13 +14,20 @@ from src.core.exceptions.base import SystemException
 monkey.patch_all()
 
 
-class AsyncLogger:
+class Logger:
+    """
+    Synchronous custom logger. It can trace a common id and trace exceptions
+
+    It has settings during initialization: log format, minimum logging level, function for creating an id
+    """
     _instance = None
     __format = '[{time}] - [{level}] - [ID: {trace_id}] - [{file}:{line}] - [{message}]'
 
     def __new__(cls, *args, **kwargs):
+        """Singleton pattern"""
+
         if cls._instance is None:
-            cls._instance = super(AsyncLogger, cls).__new__(cls)
+            cls._instance = super(Logger, cls).__new__(cls)
         return cls._instance
 
     def __init__(self, log_format=__format, min_level=LogLevel.INFO, id_generator: Optional[Callable[[], str]] = uuid4):
@@ -38,9 +45,19 @@ class AsyncLogger:
         self.min_level = level
 
     def start_trace(self):
+        """
+        Method for starting a trace id
+
+        Use in endpoints
+        """
         self.trace_id = str(self.id_generator())
 
     def end_trace(self):
+        """
+        Method for finishing a trace id
+
+        Use in endpoints after start_trace
+        """
         self.trace_id = None
         self.unload_logs()
 
@@ -66,15 +83,22 @@ class AsyncLogger:
             self._write(log_message)
 
     def _write(self, message: str):
+        """Add logs to collector
+        """
         self.collector.collect(message)
         if self.collector.interesting_volume() == self.collector.capacity:
             logs = self.collector.unload()
             self._async_write(logs)
 
     def _async_write(self, message: str):
+        """Print method for async logs"""
+
         gevent.spawn(sys.stdout.write, message).join()
 
     def unload_logs(self):
+        """
+        Unload logs from collector
+        """
         logs = self.collector.unload()
         self._async_write(logs)
 
@@ -99,4 +123,4 @@ class AsyncLogger:
         self._log(LogLevel.EXCEPTION, full_message)
 
 
-logger = AsyncLogger(min_level=LogLevel.DEBUG)
+logger = Logger(min_level=LogLevel.DEBUG)

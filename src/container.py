@@ -19,6 +19,9 @@ from src.infrastructure.database.repositories.organizatrion_repository import Or
 from src.logger import logger
 
 class Container:
+    """
+    Container class for dependency injection
+    """
 
     __unit_of_work: IUnitOfWork = UnitOfWork
 
