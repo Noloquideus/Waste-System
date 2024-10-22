@@ -18,6 +18,10 @@ docker-compose up --build
 ```shell
 http://localhost:7777/api/docs
 ```
+или
+```shell
+http://localhost:1111/api/docs
+```
 ![Swagger](.github/static/swagger.png)
 
 ### Админка
@@ -25,3 +29,7 @@ http://localhost:7777/api/docs
 http://localhost:7777/api/admin/
 ```
 ![Admin](.github/static/admin.png)
+
+### Nginx
+Работает на 1111 порту и проксирует на 7777 порт
+Админка доступна только на 7777 порту
