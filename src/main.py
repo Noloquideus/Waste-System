@@ -1,15 +1,18 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, APIRouter
 from fastapi.openapi.docs import get_swagger_ui_html
+from sqladmin import Admin
 from starlette.middleware.cors import CORSMiddleware
 from src.infrastructure.cache.redis import init_redis
+from src.infrastructure.database.admin import OrganizationAdmin, StorageAdmin, WasteTypeAdmin, WasteTransferAdmin
+from src.infrastructure.database.database import engine
 from src.presentation.api.organization.router import organization_router
 from src.presentation.api.storage.router import storage_router
 from src.logger import logger
 from src.presentation.api.waste_transfer.router import waste_transfer_router
 from src.presentation.api.waste_type.router import waste_type_router
 
-
+""" Main entry point """
 @asynccontextmanager
 async def lifespan(_):
     logger.info('Application is starting...')
@@ -21,8 +24,10 @@ async def lifespan(_):
     logger.info('Application is shutting down...')
     logger.unload_logs()
 
-
+""" Main app """
 app = FastAPI(title='Waste System', version='0.0.1', redoc_url=None, docs_url='/api/docs', lifespan=lifespan)
+
+""" Routers """
 app_router = APIRouter(prefix='/api')
 app_router.include_router(organization_router)
 app_router.include_router(storage_router)
@@ -30,6 +35,14 @@ app_router.include_router(waste_transfer_router)
 app_router.include_router(waste_type_router)
 app.include_router(app_router)
 
+""" Admin """
+admin = Admin(app, engine, title='Waste System', base_url='/api/admin')
+admin.add_view(OrganizationAdmin)
+admin.add_view(StorageAdmin)
+admin.add_view(WasteTypeAdmin)
+admin.add_view(WasteTransferAdmin)
+
+""" Middlewares """
 app.add_middleware(
     CORSMiddleware,
     allow_origins=['*'],
