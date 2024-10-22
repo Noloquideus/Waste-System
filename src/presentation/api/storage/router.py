@@ -65,10 +65,10 @@ async def get_storage(storage_id: StrictStr = Path(title='ID of storage')) -> Di
 @storage_router.put(path='/{storage_id}', status_code=200)
 async def update_storage(
         storage_id: StrictStr = Path(title='ID of storage'),
-        name: StrictStr = Query(title='Name of storage'),
-        biowaste_capacity: StrictInt = Query(title='Biowaste capacity of storage'),
-        plastic_capacity: StrictInt = Query(title='Plastic capacity of storage'),
-        glass_capacity: StrictInt = Query(title='Glass capacity of storage')
+        name: StrictStr = Query(title='Name of storage', default=None),
+        biowaste_capacity: StrictInt = Query(title='Biowaste capacity of storage', default=None),
+        plastic_capacity: StrictInt = Query(title='Plastic capacity of storage', default=None),
+        glass_capacity: StrictInt = Query(title='Glass capacity of storage', default=None)
 ) -> Dict[str, str]:
     logger.start_trace()
     logger.info(f'Updating storage with id: {storage_id}')
