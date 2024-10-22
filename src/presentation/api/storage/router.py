@@ -87,7 +87,7 @@ async def update_storage(
     return storage.to_dict()
 
 @storage_router.delete(path='/{storage_id}', status_code=200)
-async def delete_storage(storage_id) -> Dict[str, str]:
+async def delete_storage(storage_id: StrictStr = Path(title='ID of storage')) -> Dict[str, str]:
     logger.start_trace()
     logger.info(f'Deleting storage with id: {storage_id}')
     service: IStorageService = await Container.get_service(IStorageService)
