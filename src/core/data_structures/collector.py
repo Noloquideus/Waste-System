@@ -8,7 +8,7 @@ class Collector:
 
     It is used for storing logs and multiple uploads
     """
-    def __init__(self, capacity: int = 1):
+    def __init__(self, capacity: int = 1000):
         self.data_storage = []
         self.capacity = capacity
 
