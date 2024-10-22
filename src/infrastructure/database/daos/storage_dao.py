@@ -162,10 +162,19 @@ class StorageDao(IStorageDao):
             logger.exception(f'Storage with id {storage_entity.id.value} not found')
             raise NotFoundException(f'Storage with id {storage_entity.id.value} not found')
 
-        storage.name = storage_entity.name.value
-        storage.biowaste_capacity = storage_entity.biowaste_capacity.value
-        storage.plastic_capacity = storage_entity.plastic_capacity.value
-        storage.glass_capacity = storage_entity.glass_capacity.value
+        if storage_entity.name is not None:
+            logger.debug(f'Storage name: {storage_entity.name.value}')
+            storage.name = storage_entity.name.value
+        if storage_entity.biowaste_capacity is not None:
+            logger.debug(f'Storage biowaste capacity: {storage_entity.biowaste_capacity.value}')
+            storage.biowaste_capacity = storage_entity.biowaste_capacity.value
+        if storage_entity.plastic_capacity is not None:
+            logger.debug(f'Storage plastic capacity: {storage_entity.plastic_capacity.value}')
+            storage.plastic_capacity = storage_entity.plastic_capacity.value
+        if storage_entity.glass_capacity is not None:
+            logger.debug(f'Storage glass capacity: {storage_entity.glass_capacity.value}')
+            storage.glass_capacity = storage_entity.glass_capacity.value
+
         logger.debug(f'Storage updated: {storage}')
         await self._session.flush()
         logger.debug('Session flushed')

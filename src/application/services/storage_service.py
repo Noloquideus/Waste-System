@@ -40,14 +40,14 @@ class StorageService(IStorageService):
         logger.info('Storage found')
         return storage
 
-    async def update(self, storage_id: str, name: str, biowaste_capacity: str, plastic_capacity: str, glass_capacity: str) -> StorageEntity:
+    async def update(self, storage_id: str, name: str or None, biowaste_capacity: str or None, plastic_capacity: str or None, glass_capacity: str or None) -> StorageEntity:
         logger.info(f'Updating storage with id: {storage_id}')
         storage_entity = StorageEntity(
             id=ID(storage_id),
-            name=Name(name),
-            biowaste_capacity=Quantity(biowaste_capacity),
-            plastic_capacity=Quantity(plastic_capacity),
-            glass_capacity=Quantity(glass_capacity),
+            name=Name(name) if name is not None else None,
+            biowaste_capacity=Quantity(biowaste_capacity) if biowaste_capacity is not None else None,
+            plastic_capacity=Quantity(plastic_capacity) if plastic_capacity is not None else None,
+            glass_capacity=Quantity(glass_capacity) if glass_capacity is not None else None
         )
         logger.debug(f'Storage entity created: {storage_entity}')
         storage = await self._repository.update(storage_entity)
