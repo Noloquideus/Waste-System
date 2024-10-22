@@ -2,9 +2,10 @@ from src.application.domain.entities.base import Entity
 from src.application.domain.value_objects.id import ID
 from src.application.domain.value_objects.name import Name
 from src.core.decorators.validate_types import validate_types
+from src.core.objects.sealed import Sealed
 
 
-class WasteTypeEntity(Entity):
+class WasteTypeEntity(Sealed, Entity):
 
     @validate_types
     def __init__(
