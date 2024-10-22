@@ -25,7 +25,7 @@ async def lifespan(_):
     logger.unload_logs()
 
 """ Main app """
-app = FastAPI(title='Waste System', version='0.0.1', redoc_url=None, docs_url='/api/docs', lifespan=lifespan)
+app = FastAPI(title='Waste System', version='0.0.1', redoc_url=None, docs_url='/api/docs', lifespan=lifespan, openapi_url='/api/openapi.json')
 
 """ Routers """
 app_router = APIRouter(prefix='/api')
