@@ -31,6 +31,7 @@ class WasteTransferEntity(Sealed, Entity):
         self._storage_name = storage_name
         self._waste_type_name = waste_type_name
         self._created_at = created_at
+        super().__init__()
 
     @property
     def id(self):

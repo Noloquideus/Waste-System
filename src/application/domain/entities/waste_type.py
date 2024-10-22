@@ -11,10 +11,11 @@ class WasteTypeEntity(Sealed, Entity):
     def __init__(
             self,
             id: ID = None,
-            name: Name = None,
+            name: Name = None
     ):
         self._id = id
         self._name = name
+        super().__init__()
 
     @property
     def id(self):

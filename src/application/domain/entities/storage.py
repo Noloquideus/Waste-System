@@ -21,7 +21,7 @@ class StorageEntity(Sealed, Entity):
             glass_capacity: Quantity = None,
             biowaste_remaining: Quantity = None,
             plastic_remaining: Quantity = None,
-            glass_remaining: Quantity = None,
+            glass_remaining: Quantity = None
     ):
         self._id = id
         self._name = name
@@ -34,6 +34,7 @@ class StorageEntity(Sealed, Entity):
         self._biowaste_remaining = biowaste_remaining
         self._plastic_remaining = plastic_remaining
         self._glass_remaining = glass_remaining
+        super().__init__()
 
     @property
     def id(self):
